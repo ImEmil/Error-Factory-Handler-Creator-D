@@ -11,7 +11,7 @@ class ErrorFactory
 
 	public function createUserInterface($html, $custom)
 	{
-		$this->customUserInterface = ["html" => $html, "template" => $custom];
+		$this->customUserInterface = ["html" => $html . PHP_EOL, "template" => $custom];
 	}
 
 	public function getUserInterface()
