@@ -2,7 +2,7 @@
 
 class ErrorFactory
 {
-	private $errors = [];
+	private $errors;
 	private $customUserInterface = [];
 
 	public function __construct()
@@ -19,8 +19,8 @@ class ErrorFactory
 		return $this->customUserInterface;
 	}
 
-	public function createCustomInterface(Closure $closure)
+	public function createCustomInterface(Closure $next)
 	{
-		return $closure(new stdClass);
+		return $next(new stdClass);
 	}
 }
