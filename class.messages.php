@@ -20,28 +20,27 @@ class Messages
 
 	public function error($error)
 	{
-		$_SESSION["error"] = $error;
+		$_SESSION["error"][] = $error;
 		return $this;
 	}
 
 	public function warning($warning)
 	{
-		$_SESSION["warning"] = $warning;
+		$_SESSION["warning"][] = $warning;
 		return $this;
 	}
 
 	public function info($info)
 	{
-		$_SESSION["info"] = $info;
+		$_SESSION["info"][] = $info;
 		return $this;
 	}
 
 	public function success($success)
 	{
-		$_SESSION["success"] = $success;
+		$_SESSION["success"][] = $success;
 		return $this;
 	}
-
 
 	final public function _catchMessages()
 	{
@@ -53,15 +52,21 @@ class Messages
 
 			if(isset($_SESSION[$type]))
 			{
+				$messages = $_SESSION[$type];
 				$divClass = str_replace(".", null, $template["template"]->class[$type]);
 				$build    =
 				[
-					"{error.class}"   => $divClass,
-					"{error.style}"   => $template["template"]->style["all"] . $template["template"]->style[$type],
-					"{error.message}" => $_SESSION[$type]
+					"{error.class}" => $divClass,
+					"{error.style}" => $template["template"]->style["all"] . $template["template"]->style[$type],
 				];
 
-				$this->str .= str_replace(array_keys($build), array_values($build), $template["html"]);
+				array_walk($messages, function($msg, $key) use ($messages, $template, $build)
+				{
+					$build["{error.message}"] = $messages[$key];
+
+					$this->str .= str_replace(array_keys($build), array_values($build), $template["html"]);
+				});
+
 				unset($_SESSION[$type]);
 			}
 		}
