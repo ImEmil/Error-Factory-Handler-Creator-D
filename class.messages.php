@@ -60,9 +60,9 @@ class Messages
 					"{error.style}" => $template["template"]->style["all"] . $template["template"]->style[$type],
 				];
 
-				array_walk($messages, function($msg, $key) use ($messages, $template, $build)
+				array_walk($messages, function($msg, $key) use ($template, $build)
 				{
-					$build["{error.message}"] = $messages[$key];
+					$build["{error.message}"] = $msg;
 
 					$this->str .= str_replace(array_keys($build), array_values($build), $template["html"]);
 				});
